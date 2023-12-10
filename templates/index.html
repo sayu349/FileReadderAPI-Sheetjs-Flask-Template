@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form-template</title>
+    <!-- SheetJS xlsxモジュールの読み込み -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h1>フォームテンプレート</h1>
+    <p>
+        xlsxファイルをアップロードすると、<br>
+        自動でシート名を解析してセレクトボックスに表示します。
+    </p>
+    <hr>
+    <input type="file" id="fileInput" />
+    <select id="sheetSelectBox"></select>
+
+    <!-- 行番号を入力するテキストボックス -->
+    <input type="text" id="rowNumber" placeholder="行番号を入力" />
+
+    <script>
+        // ファイル入力要素の変更イベントハンドラ
+        // ファイル入力時に、発火される関数
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            // セレクトボックスを一度空にする処理
+            var selectBox = document.getElementById('sheetSelectBox');
+            selectBox.innerHTML = ''; // セレクトボックス内のオプションをクリア
+
+            // event.target.filesはユーザーが選択したファイルのリスト
+            var file = event.target.files[0]; // 最初のファイルを取得
+            var reader = new FileReader(); // FileReaderのインスタンスを作成
+
+            // ファイルの読み込みが完了した場合の動作
+            reader.onload = function(e) {
+                var data = e.target.result; // 読み込まれたファイルの内容
+
+                // SheetJSを使用してワークブックを読み込み
+                var workbook = XLSX.read(data, {type: 'binary'});
+
+                // シート名の取得
+                var sheetNames = workbook.SheetNames; // 全シート名を取得
+
+                // シート名をセレクトボックスに表示
+                var selectBox = document.getElementById('sheetSelectBox');
+                // for文でSheetNameを一つずつセレクトボックスに追加する
+                sheetNames.forEach(function(sheetName) {
+                    var option = document.createElement('option'); // オプション要素を作成
+                    option.value = sheetName; // オプションの値を設定
+                    option.textContent = sheetName; // オプションのテキストを設定
+                    selectBox.appendChild(option); // セレクトボックスにオプションを追加
+                });
+            };
+            reader.readAsBinaryString(file); // FileReaderでファイルを読み込む
+        });
+    </script>
+</body>
+</html>
