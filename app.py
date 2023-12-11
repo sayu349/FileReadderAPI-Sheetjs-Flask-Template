@@ -36,13 +36,13 @@ def sampling_xlsx_page():
         # 金額列名
         columnNameSelectBox = request.form["columnNameSelectBox"]
         # 関数実行
-        # audit_sampling(xlsxファイル, シート名, カラム名, 行番号)
+        # audit_sampling_xlsx(xlsxファイル, シート名, カラム名, 行番号)
         sampling_logic.audit_sampling_xlsx(file, sheetNameSelectBox, columnNameSelectBox, rowNumberInput)
-
         return send_file(f"{sheetNameSelectBox}サンプル.xlsx")
     # GET
     else:
         return render_template("sampling_xlsx.html")
+
 
 # csvの読み込み
 @app.route("/sampling_csv", methods=["POST","GET"])
@@ -53,16 +53,15 @@ def sampling_csv_page():
         file = request.files["fileInput"]
         # ファイル名取得
         fileName = file.filename
-        # 行番号
+        # 行番号取得
         rowNumberInput = int(request.form["rowNumberInput"])
-        # 金額列名
+        # 金額列名取得
         columnNameSelectBox = request.form["columnNameSelectBox"]
-        # ".csv" の部分を取り除く
+        # "xxx.csv" ⇒ "xxx"（.csvを取り除く）
         fileName = fileName.replace(".csv", "")
         # 関数実行
-        # audit_sampling(xlsxファイル, シート名, カラム名, 行番号)
+        # audit_sampling_csv(csvファイル, csvファイル名, カラム名, 行番号)
         sampling_logic.audit_sampling_csv(file, fileName, columnNameSelectBox, rowNumberInput)
-
         return send_file(f"{fileName}サンプル.xlsx")
     # GET
     else:

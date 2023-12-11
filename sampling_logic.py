@@ -9,9 +9,8 @@ import math
 
 
 # ============================================================
-# 監査サンプリング関数
-# ============================================================
 # ポアソン分布による金額単位サンプリングによるサンプル数算定の関数
+# ============================================================
 def sample_poisson(N, pm, ke, alpha, audit_risk, internal_control='依拠しない'):
     k = np.arange(ke+1)
     pt = pm/N
@@ -32,23 +31,22 @@ def sample_poisson(N, pm, ke, alpha, audit_risk, internal_control='依拠しな�
         n = math.ceil(n/3)
     return n
 
+# ============================================================
+# 監査サンプリング xlsx.ver
+# ============================================================
 def audit_sampling_xlsx(file_name, sheet_name, amount, row_number):
     # 読み込み用のシート名(.xlsxまで入れる)
     # file_name = '母集団.xlsx'
     # sheet_name = '製)原材料仕入'
     # amount = '金額'
     # row_nbumebr = '行番号
-
     sample_data = pd.read_excel(file_name, sheet_name=sheet_name, header=row_number-1)
-
-    # 金額がマイナスなので、それを修正
-    #sample_data[amount] = sample_data[amount]*-1
 
     # 母集団の金額が正しいかチェック
     total_amount = sample_data[amount].sum()
-    print(total_amount)
+    # print(total_amount)
 
-    # 変動パラメータの設定
+
 
     # 母集団の金額合計
     N =  total_amount
@@ -61,7 +59,6 @@ def audit_sampling_xlsx(file_name, sheet_name, amount, row_number):
     audit_risk = 'RMM-L'
     # 内部統制
     internal_control = '依拠しない'
-
 
     # 予想虚偽表示金額（変更不要）
     ke = 0
@@ -112,15 +109,10 @@ def audit_sampling_xlsx(file_name, sheet_name, amount, row_number):
     writer.close()
 
 # ============================================================
-# csvファイル用
-# 実行場所  : app.py ⇒　def sampling_csv_page()
-# 反映先    : sampling_csv.html
-# ============================================================
-def audit_sampling_csv(file,file_name, amount, row_number):
-    sample_data = pd.read_csv(file,encoding="UTF-8", header=row_number-1, thousands=',')
 
-    # 金額がマイナスなので、それを修正
-    #sample_data[amount] = sample_data[amount]*-1
+# ============================================================
+def audit_sampling_csv(file, file_name, amount, row_number):
+    sample_data = pd.read_csv(file,encoding="UTF-8", header=row_number-1, thousands=',')
 
     # 母集団の金額が正しいかチェック
     total_amount = sample_data[amount].sum()
