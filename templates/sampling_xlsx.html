@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>監査サンプリングツール</title>
+    <title>監査サンプリングツール(xlsx版)</title>
     <!-- SheetJS xlsxモジュールの読み込み -->
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <!-- bootstrap5.3 -->
@@ -12,8 +12,15 @@
 <body class="bg-secondary-subtle">
     <div class="container bg-white rounded">
         <div class="m-5 p-5">
-            <h1>監査サンプリングツール</h1>
-            <p>xlsxファイルをアップロードしてください。</p>
+            <div class="row">
+                <div class="col-10">
+                    <h1>監査サンプリングツール（xlsx版）</h1>
+                    <p>xlsxファイルをアップロードしてください</p>
+                </div>
+                <div class="col-2">
+                    <a class="btn btn-primary" href="{{ url_for('sampling_csv_page') }}">csv版に移動する</a>
+                </div>
+            </div>
             <hr>
             <form method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
@@ -26,7 +33,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="rowNumberInput" class="form-label">行番号</label>
-                    <input type="text" class="form-control" id="rowNumberInput" name="rowNumberInput" placeholder="要素名を含む行を選択" required>
+                    <input type="number" class="form-control" id="rowNumberInput" name="rowNumberInput" placeholder="要素名を含む行を選択(半角数字)" required>
                 </div>
                 <div class="mb-3">
                     <label for="columnNameSelectBox" class="form-label">金額列名</label>
@@ -37,6 +44,7 @@
         </div>
     </div>
     <script>
+        // 関数脱出後も、変数を保持する
         var workbook; // グローバル変数としてworkbookを定義
 
         // ファイル入力要素の変更イベントハンドラ
